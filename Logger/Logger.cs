@@ -35,7 +35,7 @@ namespace VisionDemo.Logger
         }
         
     }
-
+    //LogWriter类继承自Logger类
     public class LogWriter:Logger
     {
         private static ListBox myListBox;
