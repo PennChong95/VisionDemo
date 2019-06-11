@@ -12,7 +12,7 @@ namespace VisionDemo.Logger
     {
         private static string pathFile = Application.StartupPath + "\\Log";
         private static int orderNum = 0;
-        public static void WriteLog(string strData)
+        public static void WriteFile(string strData)
         {
             //创建文件夹
             StringBuilder strFolder = new StringBuilder();
@@ -36,7 +36,7 @@ namespace VisionDemo.Logger
         
     }
     //LogWriter类继承自Logger类
-    public class LogWriter:Logger
+    public class WriteLog:Logger
     {
         private static ListBox myListBox;
         private static  bool BindListBox(ListBox box)
@@ -48,7 +48,7 @@ namespace VisionDemo.Logger
 
         public static void ShowMsgToListBox(string message,bool isShowTime = true)
         {
-            WriteLog(message);
+            WriteFile(message);
             if (myListBox == null)
             {
                 return;
