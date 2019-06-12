@@ -6,17 +6,17 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Windows.Forms;
 
-namespace VisionDemo.Logger
+namespace Vision_Logger
 {
     public class Logger
     {
-        private static string pathFile = Application.StartupPath + "\\Log";
-        private static int orderNum = 0;
+        private static string _pathFile = Application.StartupPath + "\\Log";
+        private static int _orderNum = 0;
         public static void WriteFile(string strData)
         {
             //创建文件夹
             StringBuilder strFolder = new StringBuilder();
-            strFolder.AppendFormat("{0}\\{1}\\{2}\\",pathFile,DateTime.Now.Year.ToString(),DateTime.Now.Month.ToString());
+            strFolder.AppendFormat("{0}\\{1}\\{2}\\",_pathFile,DateTime.Now.Year.ToString(),DateTime.Now.Month.ToString());
             if (!Directory.Exists(strFolder.ToString()))
             {
                 Directory.CreateDirectory(strFolder.ToString());
@@ -28,41 +28,46 @@ namespace VisionDemo.Logger
             using (StreamWriter stream = File.AppendText(strFolder.ToString()))
             {
                 StringBuilder str = new StringBuilder();
-                str.AppendFormat("[{0}][{1}][{2}]{3}", orderNum, DateTime.Now, DateTime.Now.Millisecond.ToString("d4"), strData);
+                str.AppendFormat("[{0}][{1}][{2}]{3}", _orderNum, DateTime.Now, DateTime.Now.Millisecond.ToString("d4"), strData);
                 stream.WriteLine(str.ToString());
             }
-            orderNum++;
+            _orderNum++;
         }
         
     }
     //LogWriter类继承自Logger类
     public class WriteLog:Logger
     {
-        private static ListBox myListBox;
-        private static  bool BindListBox(ListBox box)
+        private static ListBox _myListBox;
+        //绑定ListBox
+        public  static  bool BindListBox(ListBox box)
         {
-            myListBox = box;
+            _myListBox = box;
 
             return true;
         }
-
+        /// <summary>
+        /// 显示信息到LIstBox中,可以选择是否显示时间信息
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="isShowTime"></param>
         public static void ShowMsgToListBox(string message,bool isShowTime = true)
         {
             WriteFile(message);
-            if (myListBox == null)
+            if (_myListBox == null)
             {
                 return;
             }
             if (isShowTime)
             {
-                message += DateTime.Now.ToString("HH:mm:ss")+" ";
+                message ="[" +DateTime.Now.ToString("HH:mm:ss")+"]  "+message;
             }
-            myListBox.Invoke(new Action(()=> {
-                myListBox.Items.Insert(0,message);
-                myListBox.SelectedIndex = myListBox.Items.Count - 1;
-                if (myListBox.Items.Count >=100)
+            _myListBox.Invoke(new Action(()=> {
+                _myListBox.Items.Insert(0,message);
+                _myListBox.SelectedIndex = _myListBox.Items.Count - 1;
+                if (_myListBox.Items.Count >=100)
                 {
-                    myListBox.Items.Clear();
+                    _myListBox.Items.Clear();
                 }
             }));
             

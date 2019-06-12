@@ -7,14 +7,23 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Vision_Logger;
+using System.Threading;
 
 namespace VisionDemo
 {
-    public partial class Form1 : Form
+    public partial class VisionMainForm : Form
     {
-        public Form1()
+        public VisionMainForm()
         {
             InitializeComponent();
+        }
+
+        private void VisionMainForm_Load(object sender, EventArgs e)
+        {
+            string str = "this is a logger";
+            WriteLog.BindListBox(listBox1);
+            WriteLog.ShowMsgToListBox(str);
         }
     }
 }
